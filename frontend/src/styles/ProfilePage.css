@@ -1,0 +1,104 @@
+/* Profile Page Container */
+.profile-page {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Profile Header */
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4a90e2;
+    background-color: #e0e0e0;
+}
+
+.profile-picture[alt='Profile'] {
+    background-size: cover;
+    background-position: center;
+}
+
+.user-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.edit-button {
+    background-color: transparent;
+    color: #4a90e2;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* Profile Info */
+.profile-info {
+    margin-bottom: 30px;
+}
+
+.info-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px 0;
+}
+
+.info-item h2 {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.info-item p {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0;
+}
+
+/* Profile Actions */
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.action-button,
+.logout-button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+    text-align: left;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.action-button:hover {
+    background-color: #f0f0f0;
+}
+
+.logout-button {
+    color: #e74c3c;
+}
+
+.logout-button:hover {
+    background-color: #fdecea;
+}
+
+/* Profile Role Styling */
+.user-role {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 10px;
+}

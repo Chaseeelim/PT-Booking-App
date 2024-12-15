@@ -1,0 +1,158 @@
+General Styles
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+.landing-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Header Section */
+.header {
+    width: 100vw; /* Ensure full page width */
+    margin: 0; /* Remove default margin */
+    background: 
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), /* Fade effect */
+        url('../images/boxing_banner.jpg') center/cover no-repeat; /* Background image */
+    text-align: center;
+    padding: 100px 20px;
+    color: #fff; /* Default text color */
+    position: relative; /* Keep the positioning proper */
+    box-sizing: border-box; /* Include padding in total width */
+}
+
+.header-content {
+    max-width: 600px;
+    margin: 0 auto;
+    z-index: 2; /* Ensure content is above the faded background */
+    position: relative;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #39FF14; /* Neon Green - bright contrasting color */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Add a shadow for better contrast */
+    margin-bottom: 20px;
+}
+
+.tagline {
+    font-size: 1.5rem;
+    color: #f0f0f0; /* Light gray for subtle contrast */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Slight shadow for better readability */
+    margin-bottom: 30px;
+}
+
+/* CTA Button */
+.cta-button {
+    display: inline-block;
+    background-color: #FF5733; /* Orange - call-to-action */
+    color: #fff;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #e74c3c; /* Darker orange on hover */
+}
+
+/* Features Section */
+.features {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+
+.feature:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.feature {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-icon {
+    width: auto;
+    height: 80px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+
+.feature h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Footer Section */
+.footer {
+    width: 100%;
+    background: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: auto;
+}
+
+.social-links a {
+    color: #ff6f00;
+    margin: 0 10px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.social-links a:hover {
+    color: #e65a00;
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        padding: 0 20px;
+    }
+
+    .features {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feature {
+        flex: 1 1 auto;
+        width: 100%;
+        max-width: 90%;
+    }
+}
+

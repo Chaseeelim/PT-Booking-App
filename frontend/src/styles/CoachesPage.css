@@ -1,0 +1,118 @@
+.coaches-page {
+    max-width: auto;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif; /* Professional font */
+    color: #333;
+    background-color: #f0f4f8; /* Light background for contrast */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.coaches-page h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50; /* Dark navy blue */
+    border-bottom: 2px solid #ff6f00; /* Add a decorative underline */
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.coaches-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Increased gap for better spacing */
+}
+
+.coach-card {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* More spacing between image and text */
+    padding: 25px;
+    background-color: #ffffff; /* Clean white background for the card */
+    border: 2px solid #ff6f00; /* Add a pop of orange */
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Softer shadow for elegance */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.coach-card:hover {
+    transform: translateY(-5px); /* Subtle lift effect on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.coach-image img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 12px; /* Slightly rounded corners */
+    border: 3px solid #ddd;
+    transition: transform 0.3s ease; /* Subtle hover effect */
+}
+
+.coach-image img:hover {
+    transform: scale(1.05); /* Zoom effect on hover */
+}
+
+.coach-info {
+    flex: 1;
+    color: #34495e; /* Professional dark gray */
+}
+
+.coach-info h2 {
+    margin: 0 0 15px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2c3e50; /* Dark navy blue */
+}
+
+.coach-bio {
+    margin: 15px 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555; /* Slightly lighter text for contrast */
+}
+
+.coach-highlights {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 15px;
+}
+
+.coach-highlights li {
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: #444; /* Professional dark tone */
+}
+
+.coach-highlights li:before {
+    content: '\2022'; /* Add a decorative bullet */
+    color: #ff6f00; /* Orange bullet */
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+@media (max-width: 768px) {
+    .coach-card {
+        flex-direction: column;
+        align-items: center; /* Center-align on smaller screens */
+    }
+
+    .coach-image img {
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+    }
+
+    .coach-info h2 {
+        text-align: center; /* Center-align title on smaller screens */
+    }
+
+    .coach-bio {
+        text-align: center; /* Center-align bio for consistency */
+    }
+}
