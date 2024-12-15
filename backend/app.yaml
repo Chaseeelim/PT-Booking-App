@@ -1,0 +1,4 @@
+runtime: nodejs18
+env_variables:
+  MONGO_URI: "mongodb+srv://chaselim96:096VxyiqpPgohYtt@projectc.heaoj.mongodb.net/?retryWrites=true&w=majority&appName=ProjectC"
+  JWT_SECRET: "680c1c08f2daba1693e2b0e41e2addcdf76198759334354f2f6fe42dedfac601"
