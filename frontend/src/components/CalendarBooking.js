@@ -18,7 +18,7 @@ const CalendarBooking = ({ isAdmin }) => {
         console.log('Fetching slots for UTC date:', formattedDate);
 
         try {
-            const response = await fetch(`http://localhost:5000/api/availability?date=${formattedDate}`);
+            const response = await fetch(`https://personal-training-app-444808.appspot.com/api/availability?date=${formattedDate}`);
             if (!response.ok) throw new Error('Failed to fetch available slots.');
 
             const data = await response.json();
@@ -70,7 +70,7 @@ const CalendarBooking = ({ isAdmin }) => {
         console.log('Payload being sent:', payload); // Debugging log
     
         try {
-            const response = await fetch('http://localhost:5000/api/availability/book', {
+            const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability/book', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

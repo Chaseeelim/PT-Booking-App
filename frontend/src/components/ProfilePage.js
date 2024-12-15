@@ -11,7 +11,7 @@ const ProfilePage = () => {
             const token = localStorage.getItem('token');
 
             try {
-                const response = await fetch('http://localhost:5000/api/users/profile', {
+                const response = await fetch('https://personal-training-app-444808.appspot.com/api/users/profile', {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,

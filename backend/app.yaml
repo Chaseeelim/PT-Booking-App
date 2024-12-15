@@ -1,4 +1,18 @@
-runtime: nodejs18
+runtime: nodejs18  # Specify the Node.js runtime version
+service: default   # Default service name
+
 env_variables:
+  PORT: "8080"  # Default port for App Engine
+  NODE_ENV: "production"
   MONGO_URI: "mongodb+srv://chaselim96:096VxyiqpPgohYtt@projectc.heaoj.mongodb.net/?retryWrites=true&w=majority&appName=ProjectC"
   JWT_SECRET: "680c1c08f2daba1693e2b0e41e2addcdf76198759334354f2f6fe42dedfac601"
+
+handlers:
+  - url: /.*
+    script: auto
+    secure: always  # Force HTTPS
+
+
+
+
+

@@ -28,7 +28,7 @@ const AdminDashboard = () => {
     // Fetch highlighted dates
     const fetchHighlightDates = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/availability/highlights');
+            const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability/highlights');
             if (response.ok) {
                 const data = await response.json();
                 setHighlightDates(data.dates);
@@ -42,7 +42,7 @@ const AdminDashboard = () => {
     const fetchExistingAvailability = async (date) => {
         try {
             const formattedDate = date.toISOString().split('T')[0];
-            const response = await fetch(`http://localhost:5000/api/availability?date=${formattedDate}`);
+            const response = await fetch(`https://personal-training-app-444808.appspot.com/api/availability?date=${formattedDate}`);
 
             if (response.ok) {
                 const data = await response.json();
@@ -95,7 +95,7 @@ const AdminDashboard = () => {
             console.log('selectedDate toISOString to save:', selectedDate.toISOString());
 
     
-            const response = await fetch('http://localhost:5000/api/availability', {
+            const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

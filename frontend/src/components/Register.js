@@ -20,7 +20,7 @@ const Register = () => {
         const user = { name, email, password };
 
         try {
-            const response = await fetch('http://localhost:5000/api/users/register', {
+            const response = await fetch('https://personal-training-app-444808.appspot.com/api/users/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

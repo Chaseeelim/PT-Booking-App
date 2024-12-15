@@ -6,7 +6,7 @@ const UserDashboard = () => {
 
     const fetchBookedSessions = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/availability/bookings', {
+            const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability/bookings', {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
