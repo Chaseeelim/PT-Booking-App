@@ -5,6 +5,8 @@ import boxingImage1 from '../images/boxing_feature1.png';
 import boxingImage2 from '../images/boxing_feature2.png';
 import boxingImage3 from '../images/boxing_feature3.png';
 import instagram from '../images/instagram_logo.png';
+import boxingImage4 from '../images/coaching1.jpg';
+
 
 const LandingPage = () => {
     const navigate = useNavigate();
@@ -47,6 +49,28 @@ const LandingPage = () => {
                     <p>Achieve your fitness goals with ease and convenience.</p>
                 </div>
             </section>
+
+            <section className="branded-app-section">
+                <div className="branded-app-content">
+                    <div className="app-description">
+                        <h2>Try Before You Commit!</h2>
+                        <p>
+                            <strong>Enjoy exclusive discounted rates for first-time users of this app, even if you've trained with me before. </strong> 
+                        </p>
+                        <p>
+                            Have questions? Feel free to reach out via the contact form or send me a direct message on Instagram!
+                        </p>
+                    </div>
+                    <div className="app-mockup">
+                        <img
+                            src={boxingImage4}
+                            alt="Branded Member App Mockup"
+                            className="app-image"
+                        />
+                    </div>
+                </div>
+            </section>
+
 
             <footer className="footer">
                 <div className="footer-content">
