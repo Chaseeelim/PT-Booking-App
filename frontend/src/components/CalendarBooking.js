@@ -14,7 +14,6 @@ const CalendarBooking = ({ isAdmin }) => {
 
 
     // Fetch dates with available slots
-    // Fetch dates with available slots
     const fetchAvailableDates = async () => {
         try {
             console.log('Fetching available dates...'); // Debug log
@@ -26,20 +25,18 @@ const CalendarBooking = ({ isAdmin }) => {
             const data = await response.json();
             console.log('Available Dates Response:', data); // Debug log
 
-            // Format dates with timezone adjustment and `YYYY-MM-DD` format
+            // Use the dates directly as provided by the API
             const formattedDates = (data.dates || []).map((date) => {
-                const rawDate = new Date(date); // Parse the raw date
-                const adjustedDate = new Date(rawDate.getTime() - rawDate.getTimezoneOffset() * 60000); // Adjust for timezone
-                const formattedDate = adjustedDate.toISOString().split('T')[0]; // Format to `YYYY-MM-DD`
-                console.log('Formatted and Adjusted Date:', formattedDate); // Debug log for each formatted date
-                return formattedDate;
+                console.log('Date without conversion:', date); // Debug log for each date
+                return date; // Use the date as-is
             });
 
-            setAvailableDates(formattedDates); // Set the adjusted and formatted dates
+            setAvailableDates(formattedDates); // Set the dates as provided by the API
         } catch (error) {
             console.error('Error fetching available dates:', error.message); // Debug log
         }
     };
+
 
 
 
