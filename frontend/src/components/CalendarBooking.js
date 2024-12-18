@@ -14,6 +14,7 @@ const CalendarBooking = ({ isAdmin }) => {
 
 
     // Fetch dates with available slots
+    // Fetch dates with available slots
     const fetchAvailableDates = async () => {
         try {
             console.log('Fetching available dates...'); // Debug log
@@ -24,11 +25,22 @@ const CalendarBooking = ({ isAdmin }) => {
 
             const data = await response.json();
             console.log('Available Dates Response:', data); // Debug log
-            setAvailableDates(data.dates || []); // Safely handle response
+
+            // Format dates with timezone adjustment and `YYYY-MM-DD` format
+            const formattedDates = (data.dates || []).map((date) => {
+                const rawDate = new Date(date); // Parse the raw date
+                const adjustedDate = new Date(rawDate.getTime() - rawDate.getTimezoneOffset() * 60000); // Adjust for timezone
+                const formattedDate = adjustedDate.toISOString().split('T')[0]; // Format to `YYYY-MM-DD`
+                console.log('Formatted and Adjusted Date:', formattedDate); // Debug log for each formatted date
+                return formattedDate;
+            });
+
+            setAvailableDates(formattedDates); // Set the adjusted and formatted dates
         } catch (error) {
             console.error('Error fetching available dates:', error.message); // Debug log
         }
     };
+
 
 
 
@@ -135,7 +147,8 @@ const CalendarBooking = ({ isAdmin }) => {
                     onChange={handleDateChange}
                     value={selectedDate}
                     tileClassName={({ date, view }) => {
-                        const formattedDate = date.toISOString().split('T')[0];
+                        const adjustedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+                        const formattedDate = adjustedDate.toISOString().split('T')[0];
                         return availableDates.includes(formattedDate) ? 'highlight-date' : null;
                     }}
                 />

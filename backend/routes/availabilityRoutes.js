@@ -54,8 +54,6 @@ router.post('/', authenticateToken, async (req, res) => {
     }
 });
 
-
-
 // Availability route: Fetch slots for a specific date
 router.get('/', async (req, res) => {
     const { date } = req.query;
@@ -113,9 +111,6 @@ router.post('/book', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Server error.' });
     }
 });
-
-
-
 
 // Fetch user's booked slots
 router.get('/bookings', authenticateToken, async (req, res) => {
@@ -203,9 +198,5 @@ router.get('/highlights', async (req, res) => {
         res.status(500).json({ message: 'Server error.' });
     }
 });
-
-
-
-
 
 module.exports = router;
