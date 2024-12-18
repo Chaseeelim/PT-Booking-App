@@ -14,6 +14,7 @@ const CalendarBooking = ({ isAdmin }) => {
 
 
     // Fetch dates with available slots
+    // Fetch dates with available slots
     const fetchAvailableDates = async () => {
         try {
             console.log('Fetching available dates...'); // Debug log
@@ -25,21 +26,20 @@ const CalendarBooking = ({ isAdmin }) => {
             const data = await response.json();
             console.log('Available Dates Response:', data); // Debug log
 
-            // Use the dates directly as provided by the API
+            // Format dates with timezone adjustment and `YYYY-MM-DD` format
             const formattedDates = (data.dates || []).map((date) => {
-                console.log('Date without conversion:', date); // Debug log for each date
-                return date; // Use the date as-is
+                const rawDate = new Date(date); // Parse the raw date
+                const adjustedDate = new Date(rawDate.getTime() - rawDate.getTimezoneOffset() * 60000); // Adjust for timezone
+                const formattedDate = adjustedDate.toISOString().split('T')[0]; // Format to `YYYY-MM-DD`
+                console.log('Formatted and Adjusted Date:', formattedDate); // Debug log for each formatted date
+                return formattedDate;
             });
 
-            setAvailableDates(formattedDates); // Set the dates as provided by the API
+            setAvailableDates(formattedDates); // Set the adjusted and formatted dates
         } catch (error) {
             console.error('Error fetching available dates:', error.message); // Debug log
         }
     };
-
-
-
-
 
     // Fetch available slots for the selected date
     const fetchAvailableSlots = async (date) => {
@@ -73,8 +73,6 @@ const CalendarBooking = ({ isAdmin }) => {
         }
     };
 
-
-
     useEffect(() => {
         console.log('useEffect for fetchAvailableDates is running'); // Debug log
         fetchAvailableDates(); // Fetch dates with available slots on mount
@@ -82,44 +80,51 @@ const CalendarBooking = ({ isAdmin }) => {
 
     // Handle booking a slot
     const handleBooking = async () => {
+        // Validate selected time
         if (!selectedTime) {
             alert('Please select a time slot.');
             return;
         }
-
-        // Convert the selected date to UTC
-        const utcDate = new Date(selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000);
-        const formattedDate = utcDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-
-        const payload = {
+    
+        // Format the selected date
+        const adjustedDate = new Date(selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000);
+        const formattedDate = adjustedDate.toISOString().split('T')[0]; // Format to YYYY-MM-DD
+            const payload = {
             date: formattedDate, // Send date in YYYY-MM-DD format
-            slot: selectedTime, // Send the time field directly (e.g., "10:00 AM")
+            slot: selectedTime, // Time slot selected by the user
         };
-
+    
         console.log('Payload being sent:', payload); // Debugging log
-
+    
         try {
+            setLoading(true); // Show loading state
+    
+            // API call to book a slot
             const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability/book', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    Authorization: `Bearer ${localStorage.getItem('token')}`, // Ensure the token exists
                 },
                 body: JSON.stringify(payload),
             });
-
+    
+            // Check if the response is successful
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message);
+                const errorData = await response.json(); // Parse the error response
+                throw new Error(errorData.message || 'An error occurred while booking the slot.');
             }
-
+    
             alert(`Booking confirmed for ${formattedDate} at ${selectedTime}`);
             fetchAvailableSlots(selectedDate); // Refresh available slots
         } catch (error) {
-            console.error('Error booking slot:', error.message);
-            alert(`Error: ${error.message}`);
+            console.error('Error booking slot:', error.message); // Log the error for debugging
+            alert(`Error: ${error.message}`); // Show error message to the user
+        } finally {
+            setLoading(false); // Hide loading state
         }
     };
+    
 
     // Handle date change
     const handleDateChange = (formattedDate) => {
