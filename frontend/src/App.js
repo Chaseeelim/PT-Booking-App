@@ -9,7 +9,6 @@ import Login from './components/Login';
 import Register from './components/Register';
 import AdminRoute from './components/AdminRoute';
 import AdminDashboard from './components/AdminDashboard';
-import UserDashboard from './components/UserDashboard';
 import Profile from './components/ProfilePage';
 
 
@@ -37,7 +36,6 @@ const AppContent = () => {
                         </AdminRoute>
                     }
                 />
-                <Route path="/dashboard" element={<UserDashboard />} />
                 <Route path="/profile" element={<Profile />} />
             </Routes>
         </>

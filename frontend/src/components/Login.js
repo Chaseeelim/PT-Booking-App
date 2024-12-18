@@ -22,12 +22,14 @@ const Login = () => {
             const data = await response.json();
 
             if (response.ok) {
+                console.log('JWT Token:', data.token);
+
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('role', data.role); // Save role in local storage
                 if (data.role === 'admin') {
                     window.location.href = '/admin-dashboard'; // Redirect admin to admin page
                 } else {
-                    window.location.href = '/dashboard'; // Redirect normal user to user page
+                    window.location.href = '/'; // Redirect to home
                 }
             } else {
                 setError(data.message || 'Invalid email or password');

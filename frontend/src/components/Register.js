@@ -7,10 +7,12 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Validate password match
         if (password !== confirmPassword) {
             setError('Passwords do not match.');
             return;
@@ -35,7 +37,11 @@ const Register = () => {
             }
 
             const data = await response.json();
-            alert(`Registration successful for ${data.user.name}`);
+            setSuccess(`Registration successful for ${data.user.name}`);
+            setName('');
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
         } catch (error) {
             console.error('Error during registration:', error.message);
             setError('Something went wrong. Please try again.');
@@ -44,36 +50,70 @@ const Register = () => {
 
     return (
         <div className="register-container">
-        <div className="register-box">
-            <h1>Register</h1>
-    
-            {/* Error message */}
-            {error && <div className="error-message">{error}</div>}
-    
-            {/* Form */}
-            <form className="register-form" onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="name">Name</label>
-                    <input type="text" id="name" placeholder="Enter your name" required />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email" required />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required />
-                </div>
-                <button type="submit" className="register-button">Register</button>
-            </form>
-    
-            {/* Link to login */}
-            <p>
-                Already have an account? <a href="/login">Login</a>
-            </p>
+            <div className="register-box">
+                <h1>Register</h1>
+
+                {/* Success and Error Messages */}
+                {error && <div className="error-message">{error}</div>}
+                {success && <div className="success-message">{success}</div>}
+
+                {/* Registration Form */}
+                <form className="register-form" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="name">Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Enter your name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="confirmPassword">Confirm Password</label>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm your password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="register-button">
+                        Register
+                    </button>
+                </form>
+
+                {/* Link to Login */}
+                <p>
+                    Already have an account? <a href="/login">Login</a>
+                </p>
+            </div>
         </div>
-    </div>
-    
     );
 };
 

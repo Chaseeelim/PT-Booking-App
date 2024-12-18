@@ -71,7 +71,6 @@ const LandingPage = () => {
                 </div>
             </section>
 
-
             <footer className="footer">
                 <div className="footer-content">
                     <p>© 2024 Chase Lim. All rights reserved.</p>

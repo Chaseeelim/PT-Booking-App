@@ -1,104 +1,171 @@
 /* Profile Page Container */
 .profile-page {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
     font-family: 'Roboto', sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #333;
 }
 
-/* Profile Header */
-.profile-header {
-    text-align: center;
+/* Profile Card */
+.profile-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
     margin-bottom: 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
 }
 
-.profile-picture {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #4a90e2;
-    background-color: #e0e0e0;
-}
-
-.profile-picture[alt='Profile'] {
-    background-size: cover;
-    background-position: center;
+.profile-header {
+    margin-bottom: 20px;
 }
 
 .user-name {
     font-size: 1.5rem;
     font-weight: bold;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
-.edit-button {
-    background-color: transparent;
-    color: #4a90e2;
-    border: none;
-    font-size: 1rem;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-/* Profile Info */
-.profile-info {
-    margin-bottom: 30px;
-}
-
-.info-item {
-    border-bottom: 1px solid #e0e0e0;
-    padding: 15px 0;
-}
-
-.info-item h2 {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 5px;
-}
-
-.info-item p {
-    font-size: 1.2rem;
-    color: #333;
-    margin: 0;
-}
-
-/* Profile Actions */
-.profile-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.action-button,
-.logout-button {
-    width: 100%;
-    padding: 15px;
-    font-size: 1rem;
-    text-align: left;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.action-button:hover {
-    background-color: #f0f0f0;
-}
-
-.logout-button {
-    color: #e74c3c;
-}
-
-.logout-button:hover {
-    background-color: #fdecea;
-}
-
-/* Profile Role Styling */
 .user-role {
     font-size: 1rem;
     color: #555;
-    margin-top: 10px;
+    margin-top: 20px;
+
+}
+
+.profile-actions {
+    margin-top: 15px;
+}
+
+.logout-button {
+    background-color: #ff4d4f;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    margin: auto;
+}
+
+.logout-button:hover {
+    background-color: #d43f3b;
+}
+
+/* Dashboard Title */
+.dashboard-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* No Sessions Message */
+.no-sessions {
+    font-size: 1.2rem;
+    color: #555;
+    text-align: center;
+}
+
+/* Session Table */
+.session-table {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.session-header {
+    display: flex;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.header-item {
+    flex: 1;
+    text-align: center;
+}
+
+.session-row {
+    display: flex;
+    padding: 10px;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.session-row:hover {
+    background-color: #f0f0f0;
+}
+
+.row-item {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Booked Sessions Section */
+.booked-sessions {
+    width: 100%;
+    max-width: 1000px; 
+    margin: 20px auto; /* Center the section */
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Session Table */
+.session-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.session-header {
+    display: flex;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.header-item {
+    flex: 1;
+    text-align: center;
+}
+
+.session-row {
+    display: flex;
+    padding: 10px;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.session-row:hover {
+    background-color: #f0f0f0;
+}
+
+.row-item {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
 }

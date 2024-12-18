@@ -24,6 +24,8 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking' }],
+
 });
 
 const User = mongoose.model('User', userSchema);

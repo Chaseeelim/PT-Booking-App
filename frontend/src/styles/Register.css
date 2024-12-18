@@ -107,8 +107,24 @@ body {
 
 /* Error Message */
 .error-message {
-    color: #dc3545;
-    font-size: 0.9rem;
+    color: red;
+    background: #ffe0e0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.success-message {
+    color: green;
+    background: #e0ffe0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.register-form .form-group {
     margin-bottom: 15px;
 }
 
@@ -124,3 +140,4 @@ a:hover {
     text-decoration: underline;
     color: #031A56; /* Slightly darker navy blue */
 }
+

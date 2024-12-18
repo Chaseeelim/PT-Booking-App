@@ -19,19 +19,16 @@ const CalendarBooking = ({ isAdmin }) => {
         try {
             console.log('Fetching available dates...'); // Debug log
             const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability/highlights');
-            console.log('Fetch response received:', response); // Debug log
 
             if (!response.ok) throw new Error(`Failed to fetch dates with availability. Status: ${response.status}`);
 
             const data = await response.json();
-            console.log('Available Dates Response:', data); // Debug log
 
             // Format dates with timezone adjustment and `YYYY-MM-DD` format
             const formattedDates = (data.dates || []).map((date) => {
                 const rawDate = new Date(date); // Parse the raw date
                 const adjustedDate = new Date(rawDate.getTime() - rawDate.getTimezoneOffset() * 60000); // Adjust for timezone
                 const formattedDate = adjustedDate.toISOString().split('T')[0]; // Format to `YYYY-MM-DD`
-                console.log('Formatted and Adjusted Date:', formattedDate); // Debug log for each formatted date
                 return formattedDate;
             });
 
@@ -54,7 +51,6 @@ const CalendarBooking = ({ isAdmin }) => {
             if (!response.ok) throw new Error('Failed to fetch available slots.');
 
             const data = await response.json();
-            console.log('Available Dates:', data.dates); // Debug log
             const slots = Array.isArray(data.slots)
                 ? data.slots.map((slot) => ({
                     ...slot,

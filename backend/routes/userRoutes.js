@@ -69,14 +69,16 @@ router.post('/login', async (req, res) => {
 router.get('/profile', authenticateToken, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password'); // Exclude password
+        console.log("profile debug", user);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
         res.json({
             name: user.name,
-            role: user.role, // Include role in response
-            bookings: user.bookings || [], // Assuming bookings exist in the schema
+            role: user.role,
+            email: user.email,
+            bookings: user.bookings || [],
         });
     } catch (error) {
         console.error(error.message);

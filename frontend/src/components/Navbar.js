@@ -66,7 +66,6 @@ const Navbar = () => {
                 {/* Links for logged-in users */}
                 {role === 'user' && (
                     <>
-                        <li><Link to="/dashboard" className="dashboard-button">Dashboard</Link></li>
                         <li>
                             <Link to="/profile" className="profile-button">Profile</Link>
                         </li>
