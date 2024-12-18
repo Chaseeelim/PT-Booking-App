@@ -38,7 +38,7 @@ h2 {
 .time-slot {
     padding: 10px 15px;
     background-color: #4caf50;
-    color: white;
+    color: black;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -69,4 +69,29 @@ h2 {
 
 .book-button:hover {
     background-color: #45a049;
+}
+
+.time-input-container{
+    color: black;
+}
+
+/* Highlight dates with available slots */
+.react-calendar .highlight-date {
+    background-color: green !important; /* Highlight in green */
+    color: white !important; /* White text for contrast */
+    border-radius: 0; /* Remove rounded corners */
+    font-weight: bold;
+    border: 2px solid darkgreen;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure square proportions */
+    height: 100%; /* Ensure square proportions */
+    box-sizing: border-box; /* Include padding and border in dimensions */
+}
+
+/* Default calendar tile hover effect */
+.react-calendar .react-calendar__tile:hover {
+    background-color: #f0f0f0;
+    color: #000;
 }

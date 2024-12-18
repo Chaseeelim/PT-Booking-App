@@ -56,22 +56,19 @@ router.post('/', authenticateToken, async (req, res) => {
 
 
 
-// Fetch availability
+// Availability route: Fetch slots for a specific date
 router.get('/', async (req, res) => {
     const { date } = req.query;
-
     if (!date) {
         return res.status(400).json({ message: 'Date query parameter is required' });
     }
 
     try {
         const availability = await Availability.findOne({ date });
-
         if (!availability) {
             return res.status(404).json({ message: 'No availability found for this date' });
         }
-
-        res.json({ date: availability.date, slots: availability.slots });
+        res.status(200).json({ date: availability.date, slots: availability.slots });
     } catch (error) {
         console.error('Error fetching availability:', error.message);
         res.status(500).json({ message: 'Server error' });
@@ -142,5 +139,73 @@ router.get('/bookings', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Server error.' });
     }
 });
+
+router.delete('/cancel', authenticateToken, async (req, res) => {
+    const { date, slot } = req.body;
+
+    if (!date || !slot) {
+        return res.status(400).json({ message: 'Date and slot are required for cancellation' });
+    }
+
+    try {
+        const availability = await Availability.findOneAndUpdate(
+            { date, 'slots.time': slot, 'slots.bookedBy': req.user.id },
+            { $set: { 'slots.$.bookedBy': null } }, // Unbook the slot
+            { new: true }
+        );
+
+        if (!availability) {
+            return res.status(404).json({ message: 'No booking found to cancel' });
+        }
+
+        res.status(200).json({ message: 'Booking cancelled successfully', availability });
+    } catch (error) {
+        console.error('Error cancelling booking:', error.message);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+router.get('/all', authenticateToken, async (req, res) => {
+    if (!req.user.isAdmin) {
+        return res.status(403).json({ message: 'Unauthorized' });
+    }
+
+    try {
+        const availability = await Availability.find({}).sort({ date: 1 });
+        res.status(200).json({ availability });
+    } catch (error) {
+        console.error('Error fetching all availability:', error.message);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+// Fetch all dates with available slots
+router.get('/highlights', async (req, res) => {
+    try {
+        console.log('Fetching all availabilities with unbooked slots...');
+        const availabilities = await Availability.find({ 'slots.bookedBy': null });
+        console.log('Raw availabilities:', availabilities);
+
+        const datesWithAvailableSlots = availabilities
+            .filter((availability) =>
+                availability.slots.some((slot) => slot.bookedBy === null)
+            )
+            .map((availability) =>
+                new Date(availability.date).toISOString().split('T')[0]
+            );
+
+        const uniqueDates = [...new Set(datesWithAvailableSlots)];
+        console.log('Unique dates with available slots:', uniqueDates);
+
+        res.status(200).json({ dates: uniqueDates });
+    } catch (error) {
+        console.error('Error fetching highlighted dates:', error.message);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+
+
+
 
 module.exports = router;

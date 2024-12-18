@@ -9,6 +9,28 @@ const CalendarBooking = ({ isAdmin }) => {
     const [selectedTime, setSelectedTime] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [availableDates, setAvailableDates] = useState([]); // Track dates with available slots
+
+
+
+    // Fetch dates with available slots
+    const fetchAvailableDates = async () => {
+        try {
+            console.log('Fetching available dates...'); // Debug log
+            const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability/highlights');
+            console.log('Fetch response received:', response); // Debug log
+
+            if (!response.ok) throw new Error(`Failed to fetch dates with availability. Status: ${response.status}`);
+
+            const data = await response.json();
+            console.log('Available Dates Response:', data); // Debug log
+            setAvailableDates(data.dates || []); // Safely handle response
+        } catch (error) {
+            console.error('Error fetching available dates:', error.message); // Debug log
+        }
+    };
+
+
 
     // Fetch available slots for the selected date
     const fetchAvailableSlots = async (date) => {
@@ -18,12 +40,12 @@ const CalendarBooking = ({ isAdmin }) => {
         console.log('Fetching slots for UTC date:', formattedDate);
 
         try {
+            setLoading(true);
             const response = await fetch(`https://personal-training-app-444808.appspot.com/api/availability?date=${formattedDate}`);
             if (!response.ok) throw new Error('Failed to fetch available slots.');
 
             const data = await response.json();
-            console.log('Available Slots (Response):', data);
-
+            console.log('Available Dates:', data.dates); // Debug log
             const slots = Array.isArray(data.slots)
                 ? data.slots.map((slot) => ({
                     ...slot,
@@ -36,7 +58,7 @@ const CalendarBooking = ({ isAdmin }) => {
         } catch (error) {
             console.error('Error fetching slots:', error);
             setAvailableSlots([]);
-            setError('Unable to load available slots. Please try again later.');
+            setError('No available slots');
         } finally {
             setLoading(false);
         }
@@ -44,12 +66,10 @@ const CalendarBooking = ({ isAdmin }) => {
 
 
 
-    // Handle date change
-    const handleDateChange = (formattedDate) => {
-        setSelectedDate(formattedDate);
-        setSelectedTime('');
-        fetchAvailableSlots(formattedDate);
-    };
+    useEffect(() => {
+        console.log('useEffect for fetchAvailableDates is running'); // Debug log
+        fetchAvailableDates(); // Fetch dates with available slots on mount
+    }, []);
 
     // Handle booking a slot
     const handleBooking = async () => {
@@ -57,18 +77,18 @@ const CalendarBooking = ({ isAdmin }) => {
             alert('Please select a time slot.');
             return;
         }
-    
+
         // Convert the selected date to UTC
         const utcDate = new Date(selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000);
         const formattedDate = utcDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-    
+
         const payload = {
             date: formattedDate, // Send date in YYYY-MM-DD format
             slot: selectedTime, // Send the time field directly (e.g., "10:00 AM")
         };
-    
+
         console.log('Payload being sent:', payload); // Debugging log
-    
+
         try {
             const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability/book', {
                 method: 'POST',
@@ -78,12 +98,12 @@ const CalendarBooking = ({ isAdmin }) => {
                 },
                 body: JSON.stringify(payload),
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
             }
-    
+
             alert(`Booking confirmed for ${formattedDate} at ${selectedTime}`);
             fetchAvailableSlots(selectedDate); // Refresh available slots
         } catch (error) {
@@ -91,20 +111,35 @@ const CalendarBooking = ({ isAdmin }) => {
             alert(`Error: ${error.message}`);
         }
     };
-    
 
+    // Handle date change
+    const handleDateChange = (formattedDate) => {
+        setSelectedDate(formattedDate);
+        setSelectedTime('');
+        fetchAvailableSlots(formattedDate);
+    };
 
     useEffect(() => {
         const adjustedDate = new Date(selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000);
         fetchAvailableSlots(adjustedDate);
     }, [selectedDate]);
 
+
+
     return (
         <div className="calendar-booking">
             <h1>{isAdmin ? 'Set Your Availability' : 'Book Your Training Session'}</h1>
 
             <div className="calendar-container">
-                <Calendar onChange={handleDateChange} value={selectedDate} />
+                <Calendar
+                    onChange={handleDateChange}
+                    value={selectedDate}
+                    tileClassName={({ date, view }) => {
+                        const formattedDate = date.toISOString().split('T')[0];
+                        return availableDates.includes(formattedDate) ? 'highlight-date' : null;
+                    }}
+                />
+
             </div>
 
             <h2>{isAdmin ? 'Available Time Slots' : 'Select Time'}</h2>
@@ -124,13 +159,6 @@ const CalendarBooking = ({ isAdmin }) => {
                             {availableSlots.length ? '--Select a time--' : 'No slots available'}
                         </option>
                         {availableSlots.map((slot, index) => {
-                            // Convert UTC time to local time for display
-                            const localTime = new Date(`1970-01-01T${slot.time}Z`).toLocaleTimeString([], {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                hour12: true, // Change to false for 24-hour format
-                            });
-
                             return (
                                 <option
                                     key={index}
@@ -153,5 +181,7 @@ const CalendarBooking = ({ isAdmin }) => {
     );
 
 };
+console.log('CalendarBooking component mounted');
+
 
 export default CalendarBooking;
