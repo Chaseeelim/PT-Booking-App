@@ -115,21 +115,19 @@ router.post('/book', authenticateToken, async (req, res) => {
 // Fetch user's booked slots
 router.get('/bookings', authenticateToken, async (req, res) => {
     try {
-        const bookings = await Availability.find({
-            'slots.bookedBy': req.user.id, // Filter by logged-in user
-        }).populate('slots.bookedBy', 'name'); // Populate 'name' field of bookedBy
+        const bookings = await Availability.find({})
+            .populate('slots.bookedBy', 'name role') // Populate user details (name and role)
+            .exec();
 
-        const userBookings = bookings.flatMap((availability) =>
-            availability.slots
-                .filter((slot) => String(slot.bookedBy?._id) === String(req.user.id))
-                .map((slot) => ({
-                    user: slot.bookedBy?.name || 'Unknown User', // Fetch user's name
-                    date: availability.date,
-                    time: slot.time,
-                }))
+        const allBookings = bookings.flatMap((availability) =>
+            availability.slots.map((slot) => ({
+                user: slot.bookedBy?.name || 'Unknown User', // Safely access user's name
+                date: availability.date,
+                time: slot.time,
+            }))
         );
 
-        res.status(200).json({ bookings: userBookings });
+        res.status(200).json({ bookings: allBookings });
     } catch (error) {
         console.error('Error fetching bookings:', error.message);
         res.status(500).json({ message: 'Server error' });

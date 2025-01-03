@@ -67,6 +67,8 @@ const AdminDashboard = () => {
                 console.log('API Response:', data);
                 setBookings(data.bookings); // Ensure API includes user name
             } else {
+                console.log(localStorage.getItem('token'));
+
                 console.error('Failed to fetch bookings');
             }
         } catch (error) {
@@ -203,7 +205,7 @@ const AdminDashboard = () => {
                         <tbody>
                             {bookings.map((booking) => (
                                 <tr key={booking._id}>
-                                    <td>{booking.user || 'Unknown User'}</td> {/* Display user name */}
+                                    <td>{booking.user || 'Unknown User'}</td>
                                     <td>{new Date(booking.date).toLocaleDateString()}</td>
                                     <td>{booking.time}</td>
                                     <td>
