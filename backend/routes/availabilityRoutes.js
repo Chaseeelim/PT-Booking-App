@@ -210,4 +210,42 @@ router.get('/highlights', async (req, res) => {
     }
 });
 
+router.delete('/bookings/:id', authenticateToken, async (req, res) => {
+    try {
+        const bookingId = req.params.id;
+
+        // Remove the booking by ID
+        await Booking.findByIdAndDelete(bookingId);
+
+        res.status(200).json({ message: 'Booking deleted successfully!' });
+    } catch (error) {
+        console.error('Error deleting booking:', error.message);
+        res.status(500).json({ message: 'Failed to delete booking.' });
+    }
+});
+
+router.put('/bookings/:id', authenticateToken, async (req, res) => {
+    try {
+        const { date, time } = req.body;
+        const bookingId = req.params.id;
+
+        // Update the booking in the database
+        const updatedBooking = await Booking.findByIdAndUpdate(
+            bookingId,
+            { date, time },
+            { new: true }
+        );
+
+        if (!updatedBooking) {
+            return res.status(404).json({ message: 'Booking not found.' });
+        }
+
+        res.status(200).json({ message: 'Booking updated successfully!', booking: updatedBooking });
+    } catch (error) {
+        console.error('Error updating booking:', error.message);
+        res.status(500).json({ message: 'Failed to update booking.' });
+    }
+});
+
+
 module.exports = router;

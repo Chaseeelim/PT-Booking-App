@@ -9,6 +9,8 @@ const AdminDashboard = () => {
     const [availableSlots, setAvailableSlots] = useState([]);
     const [highlightDates, setHighlightDates] = useState([]);
     const [bookings, setBookings] = useState([]);
+    const [editingBooking, setEditingBooking] = useState(null);
+    const [editedData, setEditedData] = useState({});
 
     useEffect(() => {
         generateTimeSlots();
@@ -64,18 +66,14 @@ const AdminDashboard = () => {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('API Response:', data);
-                setBookings(data.bookings); // Ensure API includes user name
+                setBookings(data.bookings);
             } else {
-                console.log(localStorage.getItem('token'));
-
                 console.error('Failed to fetch bookings');
             }
         } catch (error) {
             console.error('Error fetching bookings:', error);
         }
     };
-
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -95,17 +93,9 @@ const AdminDashboard = () => {
                 return;
             }
 
-            const validSlots = selectedSlots.filter((time) => time && typeof time === 'string');
-            if (!validSlots.length) {
-                alert('No valid time slots to save.');
-                return;
-            }
-
-            const newDate = new Date(selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000);
-
             const payload = {
-                date: newDate.toISOString().split('T')[0],
-                slots: validSlots.map((time) => ({ time })),
+                date: selectedDate.toISOString().split('T')[0],
+                slots: selectedSlots.map((time) => ({ time })),
             };
 
             const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability', {
@@ -150,6 +140,36 @@ const AdminDashboard = () => {
         } catch (error) {
             console.error('Error deleting booking:', error);
             alert('An error occurred while deleting booking. Please try again.');
+        }
+    };
+
+    const handleEditClick = (booking) => {
+        setEditingBooking(booking);
+        setEditedData({ date: booking.date.split('T')[0], time: booking.time });
+    };
+
+    const handleEditSubmit = async () => {
+        try {
+            const response = await fetch(`https://personal-training-app-444808.appspot.com/api/availability/bookings/${editingBooking._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify(editedData),
+            });
+
+            if (response.ok) {
+                alert('Booking updated successfully!');
+                setEditingBooking(null);
+                fetchAllBookings();
+            } else {
+                const errorData = await response.json();
+                alert(`Failed to update booking: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error('Error updating booking:', error);
+            alert('An error occurred while updating booking. Please try again.');
         }
     };
 
@@ -215,7 +235,12 @@ const AdminDashboard = () => {
                                         >
                                             Delete
                                         </button>
-                                        <button className="edit-button">Edit</button>
+                                        <button
+                                            className="edit-button"
+                                            onClick={() => handleEditClick(booking)}
+                                        >
+                                            Edit
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
@@ -223,6 +248,31 @@ const AdminDashboard = () => {
                     </table>
                 )}
             </div>
+
+            {/* Edit Modal */}
+            {editingBooking && (
+                <div className="edit-modal">
+                    <h3>Edit Booking</h3>
+                    <label>
+                        Date:
+                        <input
+                            type="date"
+                            value={editedData.date}
+                            onChange={(e) => setEditedData({ ...editedData, date: e.target.value })}
+                        />
+                    </label>
+                    <label>
+                        Time:
+                        <input
+                            type="text"
+                            value={editedData.time}
+                            onChange={(e) => setEditedData({ ...editedData, time: e.target.value })}
+                        />
+                    </label>
+                    <button onClick={handleEditSubmit}>Save</button>
+                    <button onClick={() => setEditingBooking(null)}>Cancel</button>
+                </div>
+            )}
         </div>
     );
 };
