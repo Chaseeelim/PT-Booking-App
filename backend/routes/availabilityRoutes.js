@@ -115,17 +115,15 @@ router.post('/book', authenticateToken, async (req, res) => {
 // Fetch user's booked slots
 router.get('/bookings', authenticateToken, async (req, res) => {
     try {
-        console.log("Authenticated User:", req.user); // Log the entire user object
-        console.log("User's Name:", req.user.name);   // Log the user's name
         const bookings = await Availability.find({
-            'slots.bookedBy': req.user.id,
-        });
+            'slots.bookedBy': req.user.id, // Filter by logged-in user
+        }).populate('slots.bookedBy', 'name'); // Populate 'name' field of bookedBy
 
         const userBookings = bookings.flatMap((availability) =>
             availability.slots
-                .filter((slot) => String(slot.bookedBy) === String(req.user.id))
+                .filter((slot) => String(slot.bookedBy?._id) === String(req.user.id))
                 .map((slot) => ({
-                    user: req.user.name,
+                    user: slot.bookedBy?.name || 'Unknown User', // Fetch user's name
                     date: availability.date,
                     time: slot.time,
                 }))
@@ -134,9 +132,10 @@ router.get('/bookings', authenticateToken, async (req, res) => {
         res.status(200).json({ bookings: userBookings });
     } catch (error) {
         console.error('Error fetching bookings:', error.message);
-        res.status(500).json({ message: 'Server error.' });
+        res.status(500).json({ message: 'Server error' });
     }
 });
+
 
 router.delete('/cancel', authenticateToken, async (req, res) => {
     const { date, slot } = req.body;
