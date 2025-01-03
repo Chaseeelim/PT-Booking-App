@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
+import Modal from 'react-modal';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/AdminDashboard.css';
+
+// Ensure modal is linked to the root element for accessibility
+Modal.setAppElement('#root');
 
 const AdminDashboard = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -75,74 +79,6 @@ const AdminDashboard = () => {
         }
     };
 
-    const handleDateChange = (date) => {
-        setSelectedDate(date);
-        setSelectedSlots([]);
-    };
-
-    const toggleTimeSlot = (slot) => {
-        setSelectedSlots((prevSlots) =>
-            prevSlots.includes(slot) ? prevSlots.filter((s) => s !== slot) : [...prevSlots, slot]
-        );
-    };
-
-    const saveAvailability = async () => {
-        try {
-            if (!selectedSlots.length) {
-                alert('No slots selected to save.');
-                return;
-            }
-
-            const payload = {
-                date: selectedDate.toISOString().split('T')[0],
-                slots: selectedSlots.map((time) => ({ time })),
-            };
-
-            const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-                body: JSON.stringify(payload),
-            });
-
-            if (response.ok) {
-                alert('Availability saved successfully!');
-                fetchExistingAvailability(selectedDate);
-                fetchHighlightDates();
-            } else {
-                const errorData = await response.json();
-                alert(`Failed to save availability: ${errorData.message}`);
-            }
-        } catch (error) {
-            console.error('Error saving availability:', error);
-            alert('An error occurred while saving availability. Please try again.');
-        }
-    };
-
-    const handleDeleteBooking = async (bookingId) => {
-        try {
-            const response = await fetch(`https://personal-training-app-444808.appspot.com/api/availability/bookings/${bookingId}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-            });
-
-            if (response.ok) {
-                alert('Booking deleted successfully!');
-                fetchAllBookings();
-            } else {
-                const errorData = await response.json();
-                alert(`Failed to delete booking: ${errorData.message}`);
-            }
-        } catch (error) {
-            console.error('Error deleting booking:', error);
-            alert('An error occurred while deleting booking. Please try again.');
-        }
-    };
-
     const handleEditClick = (booking) => {
         setEditingBooking(booking);
         setEditedData({ date: booking.date.split('T')[0], time: booking.time });
@@ -173,6 +109,29 @@ const AdminDashboard = () => {
         }
     };
 
+    const handleDeleteBooking = async (bookingId) => {
+        try {
+            const response = await fetch(`https://personal-training-app-444808.appspot.com/api/availability/bookings/${bookingId}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+    
+            if (response.ok) {
+                alert('Booking deleted successfully!');
+                fetchAllBookings(); // Refresh bookings
+            } else {
+                const errorData = await response.json();
+                alert(`Failed to delete booking: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error('Error deleting booking:', error);
+            alert('An error occurred while deleting booking. Please try again.');
+        }
+    };
+    
+
     return (
         <div className="admin-dashboard">
             <h1>Admin Dashboard</h1>
@@ -180,7 +139,7 @@ const AdminDashboard = () => {
 
             <div className="calendar-container">
                 <Calendar
-                    onChange={handleDateChange}
+                    onChange={(date) => setSelectedDate(date)}
                     value={selectedDate}
                     tileClassName={({ date }) => {
                         const dateStr = date.toISOString().split('T')[0];
@@ -188,25 +147,6 @@ const AdminDashboard = () => {
                     }}
                 />
             </div>
-
-            <div className="time-slots-container">
-                <h2>Select Available Time Slots</h2>
-                <div className="time-slots">
-                    {availableSlots.map((slot, index) => (
-                        <button
-                            key={index}
-                            className={`time-slot ${selectedSlots.includes(slot) ? 'selected' : ''}`}
-                            onClick={() => toggleTimeSlot(slot)}
-                        >
-                            {slot}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            <button className="save-button" onClick={saveAvailability} disabled={selectedSlots.length === 0}>
-                Save Availability
-            </button>
 
             <div className="bookings-container">
                 <h2>Manage Bookings</h2>
@@ -230,16 +170,16 @@ const AdminDashboard = () => {
                                     <td>{booking.time}</td>
                                     <td>
                                         <button
-                                            className="delete-button"
-                                            onClick={() => handleDeleteBooking(booking._id)}
-                                        >
-                                            Delete
-                                        </button>
-                                        <button
                                             className="edit-button"
                                             onClick={() => handleEditClick(booking)}
                                         >
                                             Edit
+                                        </button>
+                                        <button
+                                            className="delete-button"
+                                            onClick={() => handleDeleteBooking(booking._id)}
+                                        >
+                                            Delete
                                         </button>
                                     </td>
                                 </tr>
@@ -249,30 +189,34 @@ const AdminDashboard = () => {
                 )}
             </div>
 
-            {/* Edit Modal */}
-            {editingBooking && (
-                <div className="edit-modal">
-                    <h3>Edit Booking</h3>
-                    <label>
-                        Date:
-                        <input
-                            type="date"
-                            value={editedData.date}
-                            onChange={(e) => setEditedData({ ...editedData, date: e.target.value })}
-                        />
-                    </label>
-                    <label>
-                        Time:
-                        <input
-                            type="text"
-                            value={editedData.time}
-                            onChange={(e) => setEditedData({ ...editedData, time: e.target.value })}
-                        />
-                    </label>
-                    <button onClick={handleEditSubmit}>Save</button>
-                    <button onClick={() => setEditingBooking(null)}>Cancel</button>
-                </div>
-            )}
+            {/* Modal for Editing Booking */}
+            <Modal
+                isOpen={!!editingBooking}
+                onRequestClose={() => setEditingBooking(null)}
+                contentLabel="Edit Booking Modal"
+                className="edit-modal"
+                overlayClassName="edit-modal-overlay"
+            >
+                <h3>Edit Booking</h3>
+                <label>
+                    Date:
+                    <input
+                        type="date"
+                        value={editedData.date}
+                        onChange={(e) => setEditedData({ ...editedData, date: e.target.value })}
+                    />
+                </label>
+                <label>
+                    Time:
+                    <input
+                        type="text"
+                        value={editedData.time}
+                        onChange={(e) => setEditedData({ ...editedData, time: e.target.value })}
+                    />
+                </label>
+                <button onClick={handleEditSubmit}>Save</button>
+                <button onClick={() => setEditingBooking(null)}>Cancel</button>
+            </Modal>
         </div>
     );
 };
