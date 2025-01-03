@@ -86,4 +86,33 @@ router.get('/profile', authenticateToken, async (req, res) => {
     }
 });
 
+router.get('/all', authenticateToken, async (req, res) => {
+    if (!req.user.isAdmin) {
+        return res.status(403).json({ message: 'Unauthorized' });
+    }
+
+    try {
+        const users = await User.find({}).populate('bookings').exec(); // Populate bookings
+
+        // Format the response to include user info and their bookings
+        const enrichedUsers = users.map((user) => ({
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            bookings: user.bookings.map((booking) => ({
+                date: booking.date,
+                time: booking.time,
+            })), // Map bookings to desired format
+        }));
+
+        res.status(200).json({ users: enrichedUsers });
+    } catch (error) {
+        console.error('Error fetching users and their bookings:', error.message);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
+
 module.exports = router;

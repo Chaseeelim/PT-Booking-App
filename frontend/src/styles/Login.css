@@ -1,11 +1,11 @@
-/* General Reset */
-* {
+/* General Reset (Scoped to Login Page) */
+.login-page * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html, body {
+.login-page {
     height: 100%;
     font-family: 'Roboto', sans-serif;
     color: #fff; /* Default text color */
@@ -61,16 +61,16 @@ html, body {
 }
 
 /* Form Styles */
-.login-form {
+.login-page .login-form {
     margin-top: 20px;
 }
 
-.form-group {
+.login-page .form-group {
     margin-bottom: 20px;
     text-align: left;
 }
 
-.form-group label {
+.login-page .form-group label {
     font-size: 0.9rem;
     font-weight: bold;
     margin-bottom: 5px;
@@ -78,7 +78,7 @@ html, body {
     color: #02133F; /* Navy blue for labels */
 }
 
-.form-group input {
+.login-page .form-group input {
     width: 100%;
     padding: 10px;
     font-size: 1rem;
@@ -88,14 +88,14 @@ html, body {
     box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.form-group input:focus {
+.login-page .form-group input:focus {
     border-color: #02133F;
     outline: none;
     box-shadow: 0 0 8px rgba(2, 19, 63, 0.5);
 }
 
 /* Buttons */
-.login-button, .back-to-home {
+.login-page .login-button, .login-page .back-to-home {
     width: 100%;
     border-radius: 25px;
     background: #02133F; /* Deep navy blue */
@@ -109,32 +109,31 @@ html, body {
     margin-bottom: 15px; /* Add spacing between buttons */
 }
 
-.back-to-home {
+.login-page .back-to-home {
     margin-top: 10px; /* Adjust as needed for extra separation */
 }
 
-.login-button:hover, .back-to-home:hover {
+.login-page .login-button:hover, .login-page .back-to-home:hover {
     background: #031A56; /* Slightly darker navy blue */
     transform: scale(1.05);
 }
 
-
 /* Error Message */
-.error-message {
+.login-page .error-message {
     color: #dc3545; /* Red for errors */
     font-size: 0.9rem;
     margin-bottom: 15px;
 }
 
 /* Footer Link */
-p a {
+.login-page p a {
     color: #02133F; /* Navy blue */
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease-in-out;
 }
 
-p a:hover {
+.login-page p a:hover {
     text-decoration: underline;
     color: #031A56; /* Slightly darker blue */
 }

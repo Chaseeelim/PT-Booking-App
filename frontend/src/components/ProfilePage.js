@@ -76,6 +76,8 @@ const ProfilePage = () => {
         return <div className="profile-page error">{error}</div>;
     }
 
+    console.log("Debug user email", user.email);
+
     return (
         <div className="profile-page">
             <div className="profile-card">

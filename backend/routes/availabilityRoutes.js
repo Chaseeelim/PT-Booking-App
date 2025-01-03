@@ -115,6 +115,8 @@ router.post('/book', authenticateToken, async (req, res) => {
 // Fetch user's booked slots
 router.get('/bookings', authenticateToken, async (req, res) => {
     try {
+        console.log("Authenticated User:", req.user); // Log the entire user object
+        console.log("User's Name:", req.user.name);   // Log the user's name
         const bookings = await Availability.find({
             'slots.bookedBy': req.user.id,
         });
@@ -123,6 +125,7 @@ router.get('/bookings', authenticateToken, async (req, res) => {
             availability.slots
                 .filter((slot) => String(slot.bookedBy) === String(req.user.id))
                 .map((slot) => ({
+                    user: req.user.name,
                     date: availability.date,
                     time: slot.time,
                 }))
@@ -161,18 +164,29 @@ router.delete('/cancel', authenticateToken, async (req, res) => {
 });
 
 router.get('/all', authenticateToken, async (req, res) => {
-    if (!req.user.isAdmin) {
-        return res.status(403).json({ message: 'Unauthorized' });
-    }
-
     try {
-        const availability = await Availability.find({}).sort({ date: 1 });
+        if (!req.user.isAdmin) {
+            return res.status(403).json({ message: 'Unauthorized: Admin access required.' });
+        }
+
+        // Fetch all availability sorted by date, populating booked user details
+        const availability = await Availability.find({})
+            .sort({ date: 1 })
+            .populate('slots.bookedBy', 'name email'); // Populate user details for booked slots
+
+        // Check if no availability exists
+        if (!availability.length) {
+            return res.status(200).json({ message: 'No availability found.', availability: [] });
+        }
+
+        // Respond with availability data
         res.status(200).json({ availability });
     } catch (error) {
-        console.error('Error fetching all availability:', error.message);
+        console.error('Error fetching all availability:', error.message, { userId: req.user.id });
         res.status(500).json({ message: 'Server error.' });
     }
 });
+
 
 // Fetch all dates with available slots
 router.get('/highlights', async (req, res) => {
