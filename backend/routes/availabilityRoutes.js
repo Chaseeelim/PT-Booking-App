@@ -115,36 +115,28 @@ router.post('/book', authenticateToken, async (req, res) => {
 // Fetch user's booked slots
 router.get('/bookings', authenticateToken, async (req, res) => {
     try {
-        // Fetch availability where the logged-in user has bookings
+        console.log("Authenticated User:", req.user); // Log the entire user object
+        console.log("User's Name:", req.user.name);   // Log the user's name
         const bookings = await Availability.find({
             'slots.bookedBy': req.user.id,
         });
 
-        // Create a payload with user's name, date, and time
-        const userBookings = await Promise.all(
-            bookings.flatMap(async (availability) => {
-                return await Promise.all(
-                    availability.slots
-                        .filter((slot) => String(slot.bookedBy) === String(req.user.id))
-                        .map(async (slot) => {
-                            const user = await User.findById(slot.bookedBy).select('name'); // Fetch user's name
-                            return {
-                                user: user?.name || 'Unknown User', // Use user's name or fallback
-                                date: availability.date,
-                                time: slot.time,
-                            };
-                        })
-                );
-            })
+        const userBookings = bookings.flatMap((availability) =>
+            availability.slots
+                .filter((slot) => String(slot.bookedBy) === String(req.user.id))
+                .map((slot) => ({
+                    user: req.user.name,
+                    date: availability.date,
+                    time: slot.time,
+                }))
         );
 
-        res.status(200).json({ bookings: userBookings.flat() }); // Flatten nested arrays
+        res.status(200).json({ bookings: userBookings });
     } catch (error) {
         console.error('Error fetching bookings:', error.message);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error.' });
     }
 });
-
 
 router.delete('/cancel', authenticateToken, async (req, res) => {
     const { date, slot } = req.body;

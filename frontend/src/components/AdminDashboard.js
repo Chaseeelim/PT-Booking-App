@@ -200,9 +200,9 @@ const AdminDashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {bookings.map((booking, index) => (
-                                <tr key={index}>
-                                    <td>{booking.user}</td>
+                            {bookings.map((booking) => (
+                                <tr key={booking._id}>
+                                    <td>{booking.User || 'Unknown User'}</td>
                                     <td>{new Date(booking.date).toLocaleDateString()}</td>
                                     <td>{booking.time}</td>
                                     <td>
