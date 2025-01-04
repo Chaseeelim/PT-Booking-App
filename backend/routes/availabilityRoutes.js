@@ -121,6 +121,7 @@ router.get('/bookings', authenticateToken, async (req, res) => {
 
         const allBookings = bookings.flatMap((availability) =>
             availability.slots.map((slot) => ({
+                _id: slot._id, // Include the unique ID for the slot
                 user: slot.bookedBy?.name || 'Unknown User', // Safely access user's name
                 date: availability.date,
                 time: slot.time,
@@ -210,42 +211,58 @@ router.get('/highlights', async (req, res) => {
     }
 });
 
+//delete a slot
 router.delete('/bookings/:id', authenticateToken, async (req, res) => {
     try {
         const bookingId = req.params.id;
 
-        // Remove the booking by ID
-        await Booking.findByIdAndDelete(bookingId);
+        // Find the slot and clear the `bookedBy` field
+        const availability = await Availability.findOneAndUpdate(
+            { 'slots._id': bookingId },
+            { $set: { 'slots.$.bookedBy': null } }, // Unbook the slot
+            { new: true }
+        );
 
-        res.status(200).json({ message: 'Booking deleted successfully!' });
+        if (!availability) {
+            return res.status(404).json({ message: 'Booking not found or already deleted.' });
+        }
+
+        res.status(200).json({ message: 'Booking deleted successfully!', availability });
     } catch (error) {
         console.error('Error deleting booking:', error.message);
         res.status(500).json({ message: 'Failed to delete booking.' });
     }
 });
 
+//updating a slot
 router.put('/bookings/:id', authenticateToken, async (req, res) => {
     try {
         const { date, time } = req.body;
         const bookingId = req.params.id;
 
-        // Update the booking in the database
-        const updatedBooking = await Booking.findByIdAndUpdate(
-            bookingId,
-            { date, time },
+        // Update the slot with the new date and time
+        const availability = await Availability.findOneAndUpdate(
+            { 'slots._id': bookingId },
+            {
+                $set: {
+                    'slots.$.time': time, // Update time
+                    date, // Update date if needed (might require additional logic)
+                },
+            },
             { new: true }
         );
 
-        if (!updatedBooking) {
-            return res.status(404).json({ message: 'Booking not found.' });
+        if (!availability) {
+            return res.status(404).json({ message: 'Booking not found or update failed.' });
         }
 
-        res.status(200).json({ message: 'Booking updated successfully!', booking: updatedBooking });
+        res.status(200).json({ message: 'Booking updated successfully!', availability });
     } catch (error) {
         console.error('Error updating booking:', error.message);
         res.status(500).json({ message: 'Failed to update booking.' });
     }
 });
+
 
 
 module.exports = router;

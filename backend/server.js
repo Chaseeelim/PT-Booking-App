@@ -26,6 +26,8 @@ app.use('/api/availability', availabilityRoutes); // Availability endpoints
 app.use('/api', contactRoutes); // Mount contact routes under /api/contact
 app.use('/uploads', express.static('uploads')); // Serve uploaded files statically
 
+
+
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

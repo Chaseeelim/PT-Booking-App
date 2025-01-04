@@ -70,6 +70,7 @@ const AdminDashboard = () => {
             });
             if (response.ok) {
                 const data = await response.json();
+                console.log('API Response with IDs:', data); // Confirm _id is included
                 setBookings(data.bookings);
             } else {
                 console.error('Failed to fetch bookings');
@@ -80,21 +81,34 @@ const AdminDashboard = () => {
     };
 
     const handleEditClick = (booking) => {
+        if (!booking || !booking._id) {
+            console.error('Invalid booking object:', booking);
+            alert('Unable to edit this booking. Missing identifier.');
+            return;
+        }
         setEditingBooking(booking);
-        setEditedData({ date: booking.date.split('T')[0], time: booking.time });
+        setEditedData({ date: booking.date, time: booking.time });
     };
 
     const handleEditSubmit = async () => {
+        if (!editedData.date || !editedData.time) {
+            alert('Both date and time are required.');
+            return;
+        }
+    
         try {
-            const response = await fetch(`https://personal-training-app-444808.appspot.com/api/availability/bookings/${editingBooking._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-                body: JSON.stringify(editedData),
-            });
-
+            const response = await fetch(
+                `https://personal-training-app-444808.appspot.com/api/availability/bookings/${editingBooking._id}`, 
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    body: JSON.stringify(editedData),
+                }
+            );
+    
             if (response.ok) {
                 alert('Booking updated successfully!');
                 setEditingBooking(null);
@@ -111,18 +125,22 @@ const AdminDashboard = () => {
 
     const handleDeleteBooking = async (bookingId) => {
         try {
-            const response = await fetch(`https://personal-training-app-444808.appspot.com/api/availability/bookings/${bookingId}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`,
-                },
-            });
+            const response = await fetch(
+                `https://personal-training-app-444808.appspot.com/api/availability/bookings/${bookingId}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                }
+            );
     
             if (response.ok) {
                 alert('Booking deleted successfully!');
-                fetchAllBookings(); // Refresh bookings
+                fetchAllBookings();
             } else {
                 const errorData = await response.json();
+                console.error('Delete error:', errorData);
                 alert(`Failed to delete booking: ${errorData.message}`);
             }
         } catch (error) {
@@ -131,6 +149,8 @@ const AdminDashboard = () => {
         }
     };
     
+    console.log('Bookings:', bookings);
+
 
     return (
         <div className="admin-dashboard">

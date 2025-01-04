@@ -166,70 +166,18 @@ p {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Edit Button */
-.edit-button {
-    background-color: #2196f3;
-    color: #ffffff;
-}
-
-.edit-button:hover {
-    background-color: #1976d2;
-    transform: scale(1.05);
-}
-
-/* Delete Button */
 .delete-button {
-    background-color: #f44336;
-    color: #ffffff;
+    background-color: #f44336; /* Red */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
 }
 
 .delete-button:hover {
     background-color: #d32f2f;
-    transform: scale(1.05);
-}
-.edit-modal {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 500px;
-    width: 90%;
-    margin: 0 auto;
-    position: relative;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
-}
-
-.edit-modal label {
-    display: block;
-    margin-bottom: 15px;
-}
-
-.edit-modal input {
-    width: 95%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.edit-modal button {
-    margin: 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.edit-modal-overlay {
-    background-color: rgba(0, 0, 0, 0.75);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .delete-button {
@@ -246,4 +194,77 @@ p {
 .delete-button:hover {
     background-color: #d32f2f; /* Darker red */
 }
+
+.edit-button {
+    background-color: #4caf50; /* Green */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background-color: #45a049;
+}
+
+.edit-modal {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 500px;
+    width: 90%;
+    margin: auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-modal-overlay {
+    background-color: rgba(0, 0, 0, 0.75);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-modal h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.edit-modal label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.edit-modal input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.edit-modal button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-modal button:first-of-type {
+    background-color: #4caf50; /* Save button */
+    color: white;
+}
+
+.edit-modal button:last-of-type {
+    background-color: #f44336; /* Cancel button */
+    color: white;
+}
+
+
 
