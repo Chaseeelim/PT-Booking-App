@@ -286,11 +286,18 @@ const AdminDashboard = () => {
                         <tbody>
                             {bookings.map((booking) => (
                                 <tr key={booking._id}>
-                                    <td>{booking.user || 'Unbooked'}</td>
+                                    <td>{booking.user}</td>
                                     <td>{new Date(booking.date).toLocaleDateString()}</td>
                                     <td>{booking.time}</td>
                                     <td>
-                                        {booking.user ? (
+                                        {booking.user === 'Unbooked' ? (
+                                            <button
+                                                className="delete-button"
+                                                onClick={() => handleDeleteSlot(booking._id)}
+                                            >
+                                                Delete Slot
+                                            </button>
+                                        ) : (
                                             <>
                                                 <button
                                                     className="edit-button"
@@ -305,18 +312,13 @@ const AdminDashboard = () => {
                                                     Delete
                                                 </button>
                                             </>
-                                        ) : (
-                                            <button
-                                                className="delete-button"
-                                                onClick={() => handleDeleteSlot(booking._id)}
-                                            >
-                                                Delete Slot
-                                            </button>
                                         )}
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
+
+
                     </table>
                 )}
             </div>

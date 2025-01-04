@@ -122,7 +122,7 @@ router.get('/bookings', authenticateToken, async (req, res) => {
         const allBookings = bookings.flatMap((availability) =>
             availability.slots.map((slot) => ({
                 _id: slot._id, // Include the unique ID for the slot
-                user: slot.bookedBy?.name || 'Unknown User', // Safely access user's name
+                user: slot.bookedBy?.name || 'Unbooked', // Safely access user's name
                 date: availability.date,
                 time: slot.time,
             }))
