@@ -136,28 +136,25 @@ router.get('/bookings', authenticateToken, async (req, res) => {
 });
 
 
-router.delete('/cancel', authenticateToken, async (req, res) => {
-    const { date, slot } = req.body;
-
-    if (!date || !slot) {
-        return res.status(400).json({ message: 'Date and slot are required for cancellation' });
-    }
-
+router.delete('/slots/:id', authenticateToken, async (req, res) => {
     try {
+        const slotId = req.params.id;
+
+        // Find the slot by ID and ensure it is unbooked
         const availability = await Availability.findOneAndUpdate(
-            { date, 'slots.time': slot, 'slots.bookedBy': req.user.id },
-            { $set: { 'slots.$.bookedBy': null } }, // Unbook the slot
+            { 'slots._id': slotId, 'slots.bookedBy': null },
+            { $pull: { slots: { _id: slotId } } },
             { new: true }
         );
 
         if (!availability) {
-            return res.status(404).json({ message: 'No booking found to cancel' });
+            return res.status(404).json({ message: 'Slot not found or already booked' });
         }
 
-        res.status(200).json({ message: 'Booking cancelled successfully', availability });
+        res.status(200).json({ message: 'Slot deleted successfully!' });
     } catch (error) {
-        console.error('Error cancelling booking:', error.message);
-        res.status(500).json({ message: 'Server error.' });
+        console.error('Error deleting slot:', error.message);
+        res.status(500).json({ message: 'Failed to delete slot.' });
     }
 });
 
