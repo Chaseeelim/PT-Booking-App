@@ -42,7 +42,7 @@
     display: flex;
     list-style: none;
     margin: 0;
-    padding: 10px 40px;
+    padding: 10px 20px;
     gap: 20px;
     align-items: center;
     justify-content: center; /* Center aligns links */
@@ -80,6 +80,15 @@
     font-size: 1rem;
     padding: 8px 15px;
     border-radius: 5px;
+    display: block; /* Ensure consistency with links */
+    text-align: center; /* Align text properly */
+    color: #fff;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #ff6f00;
+    color: #fff;
 }
 
 .dashboard-button {
@@ -124,11 +133,24 @@
     }
 
     .navbar-links li {
-        margin: 10px 0;
+        margin: 10px 0; /* Consistent spacing between links */
+        width: 100%; /* Ensure links span the full width */
+        text-align: center;
     }
 
-    .navbar-links a, .logout-button, .login-button, .profile-button {
+    .navbar-links a {
         text-align: center;
         width: 100%;
+        padding: 10px 0; /* Adjust padding for better touch interaction */
+    }
+
+    .logout-button,
+    .login-button,
+    .profile-button {
+        display: block; /* Ensure buttons behave like links */
+        margin: 10px 0; /* Add consistent vertical spacing */
+        width: 100%; /* Full width for mobile view */
+        padding: 10px 0; /* Consistent touch-friendly padding */
+        text-align: center; /* Center-align the text */
     }
 }
