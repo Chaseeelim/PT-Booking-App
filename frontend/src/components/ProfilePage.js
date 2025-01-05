@@ -41,6 +41,11 @@ const ProfilePage = () => {
     // Fetch booked sessions
     useEffect(() => {
         const fetchBookedSessions = async () => {
+            if (!user || !user.name) {
+                console.log('User data not loaded yet. Skipping bookings fetch.');
+                return;
+            }
+    
             try {
                 const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability/bookings', {
                     method: 'GET',
@@ -48,25 +53,35 @@ const ProfilePage = () => {
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
                     },
                 });
-
+    
                 if (!response.ok) throw new Error('Failed to fetch booked sessions.');
-
+    
                 const data = await response.json();
-                setBookedSessions(data.bookings);
+                console.log('All bookings:', data.bookings);
+    
+                // Filter bookings for the logged-in user by matching the name
+                const userBookings = data.bookings.filter(
+                    (session) => session.user === user.name
+                );
+    
+                console.log('Filtered bookings for user:', userBookings);
+                setBookedSessions(userBookings);
             } catch (error) {
                 console.error('Error fetching booked sessions:', error);
                 setError('Error fetching your booked sessions.');
             }
         };
-
+    
         fetchBookedSessions();
-    }, []);
+    }, [user]); // Re-run only when `user` changes
+    
+    
 
     // Log out functionality
     const handleLogout = () => {
         if (window.confirm('Are you sure you want to log out?')) {
-        localStorage.removeItem('token');
-        window.location.href = '/login'; // Redirect to login page
+            localStorage.removeItem('token');
+            window.location.href = '/login'; // Redirect to login page
         }
     };
 
@@ -102,7 +117,7 @@ const ProfilePage = () => {
                 {bookedSessions.length === 0 ? (
                     <p className="no-sessions">No sessions booked yet.</p>
                 ) : (
-                    <div className="session-table"> 
+                    <div className="session-table">
                         <div className="session-header">
                             <div className="header-item">Date</div>
                             <div className="header-item">Time</div>
@@ -122,6 +137,7 @@ const ProfilePage = () => {
                     </div>
                 )}
             </div>
+
         </div>
     );
 };
