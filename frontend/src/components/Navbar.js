@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
 
@@ -6,10 +6,23 @@ const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [role, setRole] = useState(null);
     const navigate = useNavigate();
+    const menuRef = useRef(null); // Ref to detect clicks outside
 
     useEffect(() => {
         const storedRole = localStorage.getItem('role');
         setRole(storedRole);
+
+        // Event listener for clicks outside the menu
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsMenuOpen(false); // Close the menu
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
 
     const toggleMenu = () => {
@@ -38,7 +51,7 @@ const Navbar = () => {
                     ☰
                 </button>
             </div>
-            <ul className={`navbar-links ${isMenuOpen ? 'open' : ''}`}>
+            <ul ref={menuRef} className={`navbar-links ${isMenuOpen ? 'open' : ''}`}>
                 {/* Links available to everyone */}
                 <li>
                     <Link to="/book" onClick={handleBookSessionClick}>
@@ -47,7 +60,6 @@ const Navbar = () => {
                 </li>
                 <li><Link to="/coaches">Coach Info</Link></li>
 
-            
                 {/* Links for admin */}
                 {role === 'admin' && (
                     <>
@@ -56,7 +68,6 @@ const Navbar = () => {
                             <Link to="/profile" className="profile-button">Profile</Link>
                         </li>
                         <li><Link to="/contact">Contact</Link></li>
-
                         <li>
                             <button onClick={handleLogout} className="logout-button">Logout</button>
                         </li>

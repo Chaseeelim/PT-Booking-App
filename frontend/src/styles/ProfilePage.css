@@ -45,7 +45,7 @@
 }
 
 .logout-button {
-    background-color: #ff4d4f;
+    background-color: #ff6f61; /* Softer red for better contrast */
     color: white;
     font-size: 1rem;
     font-weight: bold;
@@ -58,7 +58,8 @@
 }
 
 .logout-button:hover {
-    background-color: #d43f3b;
+    background-color: #e05145; /* Darker shade for hover */
+    transform: translateY(-2px); /* Slight lift effect */
 }
 
 /* Dashboard Title */
@@ -90,6 +91,7 @@
 
 .session-header {
     display: flex;
+    flex-wrap: wrap;
     background-color: #4caf50;
     color: white;
     padding: 10px;
@@ -103,6 +105,7 @@
 
 .session-row {
     display: flex;
+    flex-wrap: wrap;
     padding: 10px;
     background-color: white;
     border-bottom: 1px solid #ddd;
@@ -123,32 +126,30 @@
 /* Booked Sessions Section */
 .booked-sessions {
     width: 100%;
-    max-width: 1000px; 
-    margin: 20px auto; /* Center the section */
+    max-width: 800px; 
+    margin: 0 auto; /* Center the section */
+    text-align: center;
     padding: 20px;
     border-radius: 8px;
+    background-color: white; /* Add a white background for better contrast */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow for a modern look */
 }
 
 /* Session Table */
 .session-table {
     width: 100%;
     border-collapse: collapse;
-    overflow: hidden;
+    overflow-x: auto;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.session-header {
-    display: flex;
-    background-color: #4caf50;
-    color: white;
-    padding: 10px;
-    font-weight: bold;
+    margin-top: 20px;
 }
 
 .header-item {
     flex: 1;
     text-align: center;
+    min-width: 100px; /* Ensure proper spacing for smaller devices */
+    padding: 10px;
 }
 
 .session-row {

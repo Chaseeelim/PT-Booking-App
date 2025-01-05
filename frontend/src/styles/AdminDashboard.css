@@ -114,6 +114,7 @@ p {
 
 /* Bookings Table */
 .bookings-table {
+    overflow-x: auto; /* Make table scrollable on small screens */
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
@@ -124,7 +125,8 @@ p {
 
 .bookings-table th,
 .bookings-table td {
-    padding: 12px;
+    text-align: center;
+    padding: 10px;
     border: 1px solid #ddd;
 }
 
@@ -153,6 +155,7 @@ p {
     display: flex;
     justify-content: center;
     gap: 10px;
+    margin: 5px;
 }
 
 .edit-button,

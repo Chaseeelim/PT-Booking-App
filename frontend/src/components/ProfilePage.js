@@ -64,8 +64,10 @@ const ProfilePage = () => {
 
     // Log out functionality
     const handleLogout = () => {
+        if (window.confirm('Are you sure you want to log out?')) {
         localStorage.removeItem('token');
         window.location.href = '/login'; // Redirect to login page
+        }
     };
 
     if (loading) {

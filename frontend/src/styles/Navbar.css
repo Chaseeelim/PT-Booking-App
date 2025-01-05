@@ -11,6 +11,7 @@
     position: sticky;
     top: 0;
     z-index: 1000;
+    box-sizing: border-box; /* Prevent overflow issues */
 }
 
 .navbar-brand {
@@ -44,9 +45,11 @@
     padding: 10px 40px;
     gap: 20px;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center; /* Center aligns links */
     flex-wrap: wrap;
     transition: all 0.3s ease-in-out; /* Smooth transition for responsive toggle */
+    max-width: 1200px; /* Limit the content width */
+
 }
 
 .navbar-links li {
