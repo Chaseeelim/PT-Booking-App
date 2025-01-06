@@ -1,8 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User'); // Import User model
-const authenticateToken = require('../middleware/authMiddleware'); // Import the middleware
+const User = require('../models/User');
+const authenticateToken = require('../middleware/authMiddleware');
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
         }
 
         const token = jwt.sign(
-            { id: user._id, email: user.email, role: user.role }, // Include role
+            { id: user._id, email: user.email, role: user.role },
             JWT_SECRET,
             { expiresIn: '1h' }
         );
@@ -112,7 +112,5 @@ router.get('/all', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
-
-
 
 module.exports = router;

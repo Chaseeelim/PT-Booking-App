@@ -7,13 +7,13 @@ const availabilitySchema = new mongoose.Schema({
         required: true,
     },
     date: {
-        type: String, // Store as a simple string (YYYY-MM-DD) to avoid timezone issues
+        type: String, // Store as a string (YYYY-MM-DD)
         required: true,
         index: true, // Index for optimized queries
     },
     slots: [
         {
-            time: { type: String, required: true }, // Store time as a simple string (e.g., "10:00 AM")
+            time: { type: String, required: true },
             bookedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
         },
     ],
@@ -23,7 +23,6 @@ const availabilitySchema = new mongoose.Schema({
     },
 });
 
-// Ensure unique combinations of `date` and `slots.time`
 availabilitySchema.index({ date: 1, 'slots.time': 1 }, { unique: true });
 
 const Availability = mongoose.model('Availability', availabilitySchema);

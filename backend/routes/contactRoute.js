@@ -11,7 +11,6 @@ router.post('/contact', async (req, res) => {
 
     try {
         
-        // Configure your Gmail account SMTP settings
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -23,7 +22,7 @@ router.post('/contact', async (req, res) => {
         // Define email options
         const mailOptions = {
             from: email, // Sender's email
-            to: process.env.EMAIL_USER, // Your email (recipient)
+            to: process.env.EMAIL_USER, // my email (recipient)
             subject: `New Contact Form Submission from ${name}`,
             text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
         };

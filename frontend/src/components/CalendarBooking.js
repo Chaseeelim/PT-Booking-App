@@ -14,7 +14,6 @@ const CalendarBooking = ({ isAdmin }) => {
 
 
     // Fetch dates with available slots
-    // Fetch dates with available slots
     const fetchAvailableDates = async () => {
         try {
             console.log('Fetching available dates...'); // Debug log
@@ -93,21 +92,21 @@ const CalendarBooking = ({ isAdmin }) => {
         console.log('Payload being sent:', payload); // Debugging log
     
         try {
-            setLoading(true); // Show loading state
+            setLoading(true);
     
             // API call to book a slot
             const response = await fetch('https://personal-training-app-444808.appspot.com/api/availability/book', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`, // Ensure the token exists
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
                 body: JSON.stringify(payload),
             });
     
             // Check if the response is successful
             if (!response.ok) {
-                const errorData = await response.json(); // Parse the error response
+                const errorData = await response.json();
                 throw new Error(errorData.message || 'An error occurred while booking the slot.');
             }
     
@@ -117,7 +116,7 @@ const CalendarBooking = ({ isAdmin }) => {
             console.error('Error booking slot:', error.message); // Log the error for debugging
             alert(`Error: ${error.message}`); // Show error message to the user
         } finally {
-            setLoading(false); // Hide loading state
+            setLoading(false);
         }
     };
     

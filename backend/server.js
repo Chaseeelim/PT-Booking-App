@@ -1,10 +1,10 @@
-require('dotenv').config(); // Load environment variables
+require('dotenv').config();
 const express = require('express');
-const cors = require('cors'); // Import the cors middleware
+const cors = require('cors');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
-const availabilityRoutes = require('./routes/availabilityRoutes'); // Adjust the path as needed
-const contactRoutes = require('./routes/contactRoute'); // Path to the contact route file
+const availabilityRoutes = require('./routes/availabilityRoutes');
+const contactRoutes = require('./routes/contactRoute'); 
 
 const app = express();
 

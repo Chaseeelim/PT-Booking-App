@@ -242,8 +242,8 @@ router.put('/bookings/:id', authenticateToken, async (req, res) => {
             { 'slots._id': bookingId },
             {
                 $set: {
-                    'slots.$.time': time, // Update time
-                    date, // Update date if needed (might require additional logic)
+                    'slots.$.time': time,
+                    date,
                 },
             },
             { new: true }

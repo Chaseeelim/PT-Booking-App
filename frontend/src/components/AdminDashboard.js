@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/AdminDashboard.css';
 
-// Ensure modal is linked to the root element for accessibility
+// to ensure modal is linked to the root element for accessibility
 Modal.setAppElement('#root');
 
 const AdminDashboard = () => {

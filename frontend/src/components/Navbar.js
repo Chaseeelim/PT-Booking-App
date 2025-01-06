@@ -6,7 +6,7 @@ const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [role, setRole] = useState(null);
     const navigate = useNavigate();
-    const menuRef = useRef(null); // Ref to detect clicks outside
+    const menuRef = useRef(null); //to detect clicks outside
 
     useEffect(() => {
         const storedRole = localStorage.getItem('role');
