@@ -125,14 +125,15 @@
 
 /* Booked Sessions Section */
 .booked-sessions {
+    overflow-x: auto;
     width: 100%;
     max-width: 800px; 
-    margin: 0 auto; /* Center the section */
+    margin: 0 auto;
     text-align: center;
     padding: 20px;
     border-radius: 8px;
-    background-color: white; /* Add a white background for better contrast */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow for a modern look */
+    background-color: white; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Session Table */

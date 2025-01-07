@@ -97,12 +97,14 @@ p {
 
 /* Bookings Section */
 .bookings-container {
-    margin-top: 40px;
+    margin: 0 auto; /* Centers the table */
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
+    overflow-x: auto;
+    width: 100%;
 }
 
 .bookings-container h2 {
@@ -114,7 +116,7 @@ p {
 
 /* Bookings Table */
 .bookings-table {
-    overflow-x: auto; /* Make table scrollable on small screens */
+    overflow-x: auto;
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
@@ -148,6 +150,32 @@ p {
 
 .bookings-table tr:hover {
     background-color: #f1f1f1;
+}
+
+/* Make the table content stack on small screens */
+@media (max-width: 600px) {
+    .bookings-table th,
+    .bookings-table td {
+        display: block;
+        text-align: center;
+        padding: 8px;
+        border: none;
+    }
+
+    .bookings-table th {
+        background-color: transparent;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .bookings-table td {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .bookings-table tr {
+        display: block;
+        margin-bottom: 30px;
+    }
 }
 
 /* Action Buttons */
